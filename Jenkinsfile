@@ -4,8 +4,15 @@ pipeline {
     stages {
         stage('Connect AWS') {
             steps {
-                script {
-                    sh 'echo  | docker login --username AWS --password-stdin 065334477167.dkr.ecr.us-east-1.amazonaws.com'
+                withCredentials([usernamePassword(credentialsId: 'my_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                        echo "Username: \${USERNAME}"
+                        echo "Password: \${PASSWORD}"
+
+                    """
+                    script {
+                        sh 'echo \${PASSWORD} | docker login --username AWS --password-stdin \${USERNAME}.dkr.ecr.us-east-1.amazonaws.com'
+                    }
                 }
             }
         }
