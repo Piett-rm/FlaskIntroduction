@@ -2,6 +2,20 @@ pipeline {
     agent any
 
     stages {
+        stage('Install requirements'){
+            steps {
+                sh '''
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+        stage('Tests'){
+            steps {
+                sh '''
+                    pytest
+                '''
+            }
+        }
         stage('Connect AWS') {
             steps {
                 withCredentials([usernamePassword(credentialsId: '1', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
