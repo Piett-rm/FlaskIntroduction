@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Connect AWS') {
             steps {
-                withCredentials([usernamePassword(usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: '1', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
                         echo "Username: \${USERNAME}"
                         echo "Password: \${PASSWORD}"
