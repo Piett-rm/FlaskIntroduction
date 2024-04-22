@@ -32,6 +32,9 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html', tasks=tasks)
 
+@app.route('/test', methods=['GET'])
+def tests():
+    return {'hello': 'world'}
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -62,4 +65,4 @@ def update(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
