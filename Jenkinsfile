@@ -5,11 +5,6 @@ pipeline {
         stage('Connect AWS') {
             steps {
                 withCredentials([usernamePassword(credentialsId: '1', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh """
-                        echo "Username: \${USERNAME}"
-                        echo "Password: \${PASSWORD}"
-
-                    """
                     script {
                         sh 'echo \${PASSWORD} | docker login --username AWS --password-stdin \${USERNAME}.dkr.ecr.us-east-1.amazonaws.com'
                     }
@@ -18,11 +13,11 @@ pipeline {
         }
         stage('Docker build and publish') {
 			steps {
-				dir('./AppRemi') {
+			    withCredentials([usernamePassword(credentialsId: '1', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 					sh '''
 						docker build -t tp-integration:latest .
-						docker tag tp-integration:latest 065334477167.dkr.ecr.us-east-1.amazonaws.com/tp-integration:latest
-						docker push 065334477167.dkr.ecr.us-east-1.amazonaws.com/tp-integration:latest
+						docker tag tp-integration:latest \${USERNAME}.dkr.ecr.us-east-1.amazonaws.com/tp-integration:latest
+						docker push \${USERNAME}.dkr.ecr.us-east-1.amazonaws.com/tp-integration:latest
 					'''
 				}
 			}
