@@ -2,18 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Install requirements'){
+        stage('Install requirements and Tests'){
             steps {
                 sh '''
                     python3 -m venv venv
                     . ./venv/bin/activate
                     pip install -r requirements.txt
-                '''
-            }
-        }
-        stage('Tests'){
-            steps {
-                sh '''
                     pytest
                 '''
             }
